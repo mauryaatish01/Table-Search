@@ -1,18 +1,21 @@
 import React, { Component } from "react";
 import "./App.css";
-import {Redirect} from 'react-router-dom'
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+
 class Table extends Component {
-  state={
-      redirect:false      
-  }
-  addRecord=()=>{
-       this.setState({redirect:!this.state.redirect})
-  }        
-          
+  state = {
+    redirect: false
+  };
+  addRecord = () => {
+    this.setState({ redirect: !this.state.redirect });
+  };
+
   render() {
-    if(this.state.redirect===true){
-              return <Redirect to='/form' />
-    }        
+    console.log('props are=>',this.props)        
+    if (this.state.redirect === true) {
+      return <Redirect to="/form" />;
+    }
     return (
       <div className="container App">
         <div className="row " style={{ marginBottom: 10 }}>
@@ -84,4 +87,10 @@ class Table extends Component {
   }
 }
 
-export default Table;
+const mapStateToProps = state => {
+  return {
+     tableData:state   
+  };
+};
+
+export default connect(mapStateToProps)(Table);
