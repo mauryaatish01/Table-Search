@@ -6,20 +6,35 @@ import { connect } from "react-redux";
 class Table extends Component {
   state = {
     redirect: false,
-    deleteRecord:[]
+    deleteRecord:[],
+    
   };
   addRecord = () => {
     this.setState({ redirect: !this.state.redirect });
   };
   checkboxChange=(e)=>{
     this.setState({deleteRecord:this.state.deleteRecord.concat(e.target.id)})
+    
   }
   deleteRecord=()=>{
     this.props.deleteRow(this.state.deleteRecord)
+    
+    
+  }
+
+  searchRecord=(e)=>{
+    
+    this.props.searchRow(e.target.value)
+  }
+
+  sortMethod=(e)=>{
+    console.log('i am here',e.target.id)
+    this.props.sortRow(e.target.id)
   }
 
   render() {
     //let { firstName,lastName,heroName,email,gender,age}=this.props.tableData
+    
     if (this.state.redirect === true) {
       return <Redirect to="/form" />;
     }
@@ -47,6 +62,7 @@ class Table extends Component {
               type="text"
               placeholder="search"
               style={{ marginLeft: 5, borderRadius: 10 }}
+              onChange={this.searchRecord}
             />
           </div>
         </div>
@@ -57,12 +73,12 @@ class Table extends Component {
                 <tr>
                   <th />
                   <th scope="col">#</th>
-                  <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Superhero Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Gender</th>
-                  <th scope="col">Age</th>
+                  <th scope="col" onClick={this.sortMethod} id='firstName'>First Name</th>
+                  <th scope="col" onClick={this.sortMethod} id='lastName'>Last Name</th>
+                  <th scope="col" onClick={this.sortMethod} id='heroName'>Superhero Name</th>
+                  <th scope="col" onClick={this.sortMethod} id='email'>Email</th>
+                  <th scope="col" onClick={this.sortMethod} id='gender'>Gender</th>
+                  <th scope="col" onClick={this.sortMethod} id='age'>Age</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,28 +111,7 @@ class Table extends Component {
                       <td>{age}</td>
                     </tr>
                   );
-                })}
-                {/* <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td>1</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
-                </tr> */}
+                })}                
               </tbody>
             </table>
           </div>
@@ -134,7 +129,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps=dispatch=>{
   return{
-    deleteRow: (data) => dispatch({type:'DEL_DATA',data})
+    deleteRow: (data) => dispatch({type:'DEL_DATA',data}),
+    searchRow:(text)=>dispatch({type:'SEARCH_DATA',text}),
+    sortRow:(id)=>dispatch({type:'SORT_DATA',id})
   }
 }
 

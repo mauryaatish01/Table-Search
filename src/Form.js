@@ -1,38 +1,49 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import {connect} from 'react-redux'
+import { connect } from "react-redux";
 class Form extends Component {
   state = {
     redirect: false,
     firstName: "",
     lastName: "",
     heroName: "",
-    email:'',
-    gender:'',
-    age:''
+    email: "",
+    gender: "",
+    age: ""
   };
   handleInput = e => {
     this.setState({ [e.target.id]: e.target.value });
-    console.log(this.state);
+    
   };
   handleClick = () => {
-    let obj= {...this.state}        
-    for(let key in obj){
-          if(obj[key]===''){
-                    alert('Please fill all fields before proceeding..')
-                    return;
-          }
-    }        
-     
-    
-    this.setState((prevState)=>{
-              return {
-                ...prevState,
-                redirect: !prevState.redirect,
-                key: Math.floor(Math.random() * 100000)
-              };
-    }, () => this.props.add(this.state));
+    let obj = { ...this.state };
+    for (let key in obj) {
+      if (obj[key] === "") {
+        alert("Please fill all fields before proceeding..");
+        return;
+      }
+    }
+
+    this.setState(
+      prevState => {
+        return {
+          ...prevState,
+          redirect: !prevState.redirect,
+          key: Math.floor(Math.random() * 100000)
+        };
+      },
+      () => this.props.add(this.state)
+    );
   };
+  goback=()=>{
+    this.setState(
+      prevState => {
+        return {
+          redirect: !prevState.redirect,
+        };
+      },
+    );
+  }
   render() {
     if (this.state.redirect === true) {
       return <Redirect to="/" />;
@@ -99,13 +110,19 @@ class Form extends Component {
         <button onClick={this.handleClick} className="btn btn-primary">
           Add Data
         </button>
+        <button onClick={this.goback} className="btn btn-primary" style={{marginLeft:10}}>
+          Go Back
+        </button>
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch)=>{
-     return{add:(data)=>dispatch({type:'ADD_DATA',data:data})}     
-}
+const mapDispatchToProps = dispatch => {
+  return { add: data => dispatch({ type: "ADD_DATA", data: data }) };
+};
 
-export default connect(null,mapDispatchToProps)(Form);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Form);
