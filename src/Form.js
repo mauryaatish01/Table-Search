@@ -13,7 +13,6 @@ class Form extends Component {
   };
   handleInput = e => {
     this.setState({ [e.target.id]: e.target.value });
-    
   };
   handleClick = () => {
     let obj = { ...this.state };
@@ -35,15 +34,13 @@ class Form extends Component {
       () => this.props.add(this.state)
     );
   };
-  goback=()=>{
-    this.setState(
-      prevState => {
-        return {
-          redirect: !prevState.redirect,
-        };
-      },
-    );
-  }
+  goback = () => {
+    this.setState(prevState => {
+      return {
+        redirect: !prevState.redirect
+      };
+    });
+  };
   render() {
     if (this.state.redirect === true) {
       return <Redirect to="/" />;
@@ -110,7 +107,11 @@ class Form extends Component {
         <button onClick={this.handleClick} className="btn btn-primary">
           Add Data
         </button>
-        <button onClick={this.goback} className="btn btn-primary" style={{marginLeft:10}}>
+        <button
+          onClick={this.goback}
+          className="btn btn-primary"
+          style={{ marginLeft: 10 }}
+        >
           Go Back
         </button>
       </div>

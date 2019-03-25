@@ -6,48 +6,41 @@ import { connect } from "react-redux";
 class Table extends Component {
   state = {
     redirect: false,
-    deleteRecord:[],
-    
+    deleteRecord: []
   };
   addRecord = () => {
     this.setState({ redirect: !this.state.redirect });
   };
-  checkboxChange=(e)=>{
-    let id=e.target.id;
+  checkboxChange = e => {
+    let id = e.target.id;
     let index;
-    let record=this.state.deleteRecord;
-    if(e.target.checked){
-      if(record.indexOf(id)===-1){
-        record=record.concat(id)
+    let record = this.state.deleteRecord;
+    if (e.target.checked) {
+      if (record.indexOf(id) === -1) {
+        record = record.concat(id);
       }
-    }else{
-      index=record.indexOf(id);
-      record.splice(index,1)
+    } else {
+      index = record.indexOf(id);
+      record.splice(index, 1);
     }
-    
-    if(record.length>0){this.setState({deleteRecord:record})}
-    
-    
-  }
-  deleteRecord=()=>{
-    this.props.deleteRow(this.state.deleteRecord)
-    
-    
-  }
 
-  searchRecord=(e)=>{
-    
-    this.props.searchRow(e.target.value)
-  }
+    if (record.length > 0) {
+      this.setState({ deleteRecord: record });
+    }
+  };
+  deleteRecord = () => {
+    this.props.deleteRow(this.state.deleteRecord);
+  };
 
-  sortMethod=(e)=>{
-    console.log('i am here',e.target.id)
-    this.props.sortRow(e.target.id)
-  }
+  searchRecord = e => {
+    this.props.searchRow(e.target.value);
+  };
+
+  sortMethod = e => {
+    this.props.sortRow(e.target.id);
+  };
 
   render() {
-    //let { firstName,lastName,heroName,email,gender,age}=this.props.tableData
-    
     if (this.state.redirect === true) {
       return <Redirect to="/form" />;
     }
@@ -86,12 +79,24 @@ class Table extends Component {
                 <tr>
                   <th />
                   <th scope="col">#</th>
-                  <th scope="col" onClick={this.sortMethod} id='firstName'>First Name</th>
-                  <th scope="col" onClick={this.sortMethod} id='lastName'>Last Name</th>
-                  <th scope="col" onClick={this.sortMethod} id='heroName'>Superhero Name</th>
-                  <th scope="col" onClick={this.sortMethod} id='email'>Email</th>
-                  <th scope="col" onClick={this.sortMethod} id='gender'>Gender</th>
-                  <th scope="col" onClick={this.sortMethod} id='age'>Age</th>
+                  <th scope="col" onClick={this.sortMethod} id="firstName">
+                    First Name
+                  </th>
+                  <th scope="col" onClick={this.sortMethod} id="lastName">
+                    Last Name
+                  </th>
+                  <th scope="col" onClick={this.sortMethod} id="heroName">
+                    Superhero Name
+                  </th>
+                  <th scope="col" onClick={this.sortMethod} id="email">
+                    Email
+                  </th>
+                  <th scope="col" onClick={this.sortMethod} id="gender">
+                    Gender
+                  </th>
+                  <th scope="col" onClick={this.sortMethod} id="age">
+                    Age
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -124,7 +129,7 @@ class Table extends Component {
                       <td>{age}</td>
                     </tr>
                   );
-                })}                
+                })}
               </tbody>
             </table>
           </div>
@@ -136,16 +141,19 @@ class Table extends Component {
 
 const mapStateToProps = state => {
   return {
-     tableData:state   
+    tableData: state
   };
 };
 
-const mapDispatchToProps=dispatch=>{
-  return{
-    deleteRow: (data) => dispatch({type:'DEL_DATA',data}),
-    searchRow:(text)=>dispatch({type:'SEARCH_DATA',text}),
-    sortRow:(id)=>dispatch({type:'SORT_DATA',id})
-  }
-}
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteRow: data => dispatch({ type: "DEL_DATA", data }),
+    searchRow: text => dispatch({ type: "SEARCH_DATA", text }),
+    sortRow: id => dispatch({ type: "SORT_DATA", id })
+  };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(Table);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Table);
