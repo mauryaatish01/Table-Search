@@ -13,7 +13,20 @@ class Table extends Component {
     this.setState({ redirect: !this.state.redirect });
   };
   checkboxChange=(e)=>{
-    this.setState({deleteRecord:this.state.deleteRecord.concat(e.target.id)})
+    let id=e.target.id;
+    let index;
+    let record=this.state.deleteRecord;
+    if(e.target.checked){
+      if(record.indexOf(id)===-1){
+        record=record.concat(id)
+      }
+    }else{
+      index=record.indexOf(id);
+      record.splice(index,1)
+    }
+    
+    if(record.length>0){this.setState({deleteRecord:record})}
+    
     
   }
   deleteRecord=()=>{

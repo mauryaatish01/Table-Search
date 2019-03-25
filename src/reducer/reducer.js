@@ -48,12 +48,23 @@ export default (state = [], action) => {
       sortdata.sort(GetSortOrder(action.id))
       return sortdata;
     }  
+    break;
     default:
       return newState;
   }
 };
 
-const GetSortOrder= (prop) =>{  
+const GetSortOrder= (prop) =>{
+  if(prop==='age'){
+    return (a,b)=>{
+      if (parseInt(a[prop]) > parseInt(b[prop])) {  
+        return 1;  
+    } else if (parseInt(a[prop]) < parseInt(b[prop])) {  
+        return -1;  
+    }  
+    return 0; 
+    }
+  }  
   return (a, b)=>{  
       if (a[prop] > b[prop]) {  
           return 1;  
