@@ -5,14 +5,21 @@ import { connect } from "react-redux";
 
 class Table extends Component {
   state = {
-    redirect: false
+    redirect: false,
+    deleteRecord:[]
   };
   addRecord = () => {
     this.setState({ redirect: !this.state.redirect });
   };
+  checkboxChange=(e)=>{
+    this.setState({deleteRecord:this.state.deleteRecord.concat(e.target.id)})
+  }
+  deleteRecord=()=>{
+    this.props.deleteRow(this.state.deleteRecord)
+  }
 
   render() {
-    console.log('props are=>',this.props)        
+    //let { firstName,lastName,heroName,email,gender,age}=this.props.tableData
     if (this.state.redirect === true) {
       return <Redirect to="/form" />;
     }
@@ -25,6 +32,7 @@ class Table extends Component {
               type="button"
               className="btn btn-light custombutton deleteButton"
               style={{ marginRight: 5 }}
+              onClick={this.deleteRecord}
             >
               Delete
             </button>
@@ -47,6 +55,7 @@ class Table extends Component {
             <table className="table table-striped">
               <thead className="thead-light">
                 <tr>
+                  <th />
                   <th scope="col">#</th>
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
@@ -57,7 +66,37 @@ class Table extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                {this.props.tableData.map((row, index) => {
+                  let {
+                    firstName,
+                    lastName,
+                    heroName,
+                    email,
+                    gender,
+                    age,
+                    key
+                  } = row;
+
+                  return (
+                    <tr key={key}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          id={key}
+                          onChange={this.checkboxChange}
+                        />
+                      </td>
+                      <td>{index + 1}</td>
+                      <td>{firstName}</td>
+                      <td>{lastName}</td>
+                      <td>{heroName}</td>
+                      <td>{email}</td>
+                      <td>{gender}</td>
+                      <td>{age}</td>
+                    </tr>
+                  );
+                })}
+                {/* <tr>
                   <td>
                     <input type="checkbox" />
                   </td>
@@ -77,7 +116,7 @@ class Table extends Component {
                   <td>Larry</td>
                   <td>the Bird</td>
                   <td>@twitter</td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
           </div>
@@ -93,4 +132,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps=dispatch=>{
+  return{
+    deleteRow: (data) => dispatch({type:'DEL_DATA',data})
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Table);

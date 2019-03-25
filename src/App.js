@@ -9,7 +9,7 @@ class App extends Component {
       <Router>
         <Switch>
           <Route path="/" exact component={Table} />
-          <Route exact path="/form" exact component={Form} />
+          <Route exact path="/form" component={Form} />
         </Switch>
         
         

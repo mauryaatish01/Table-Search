@@ -104,7 +104,7 @@ class Form extends Component {
   }
 }
 
-const mapDispatchToProps=(dispatch)=>{
+const mapDispatchToProps = (dispatch)=>{
      return{add:(data)=>dispatch({type:'ADD_DATA',data:data})}     
 }
 
